@@ -119,7 +119,7 @@ print("3. Özel Alan Adı (Custom Domain) Tanımlanıyor...")
 
 # Bind sinopiamanti.com
 print("   - sinopiamanti.com ekleniyor...")
-q_domain1 = f'mutation {{ customDomainCreate(input: {{ environmentId: "{env_id}", serviceId: "{service_id}", domain: "sinopiamanti.com" }}) {{ id domain }} }}'
+q_domain1 = f'mutation {{ customDomainCreate(input: {{ projectId: "{project_id}", environmentId: "{env_id}", serviceId: "{service_id}", domain: "sinopiamanti.com" }}) {{ id domain }} }}'
 res_d1 = run_query(q_domain1)
 if 'errors' in res_d1:
     print("     Uyanı/Hata:", res_d1['errors'][0].get('message'))
@@ -128,7 +128,7 @@ else:
 
 # Bind www.sinopiamanti.com
 print("   - www.sinopiamanti.com ekleniyor...")
-q_domain2 = f'mutation {{ customDomainCreate(input: {{ environmentId: "{env_id}", serviceId: "{service_id}", domain: "www.sinopiamanti.com" }}) {{ id domain }} }}'
+q_domain2 = f'mutation {{ customDomainCreate(input: {{ projectId: "{project_id}", environmentId: "{env_id}", serviceId: "{service_id}", domain: "www.sinopiamanti.com" }}) {{ id domain }} }}'
 res_d2 = run_query(q_domain2)
 if 'errors' in res_d2:
     print("     Uyanı/Hata:", res_d2['errors'][0].get('message'))
