@@ -26,7 +26,7 @@ HEADERS = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {RAILWAY_TOKEN}"
 }
-URL = "https://backboard.railway.app/graphql/v2"
+URL = "https://backboard.railway.com/graphql/v2"
 
 # Git repository is expected to be named: dijitalhomee-prog/Sinopia-Mant-
 REPO = "dijitalhomee-prog/Sinopia-Mant-"
