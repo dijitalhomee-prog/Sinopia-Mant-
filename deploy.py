@@ -68,17 +68,19 @@ if os.path.exists(STATE_FILE):
 if not project_id or not env_id or not service_id:
     print("1. Railway Projesi Oluşturuluyor...")
     
-    # Workspace'i (teamId) otomatik tespit et
-    q_teams = 'query { teams { edges { node { id name } } } }'
-    res_t = run_query(q_teams)
-    team_id = None
-    if res_t.get('data', {}).get('teams', {}).get('edges'):
-        team_id = res_t['data']['teams']['edges'][0]['node']['id']
-        team_name = res_t['data']['teams']['edges'][0]['node']['name']
-        print(f"ℹ️ Workspace tespit edildi: {team_name} (ID: {team_id})")
+    # Workspace'i otomatik tespit et
+    q_workspaces = 'query { me { workspaces { id name } } }'
+    res_w = run_query(q_workspaces)
+    workspace_id = None
+    if res_w.get('data', {}).get('me', {}).get('workspaces'):
+        workspaces = res_w['data']['me']['workspaces']
+        if workspaces:
+            workspace_id = workspaces[0]['id']
+            workspace_name = workspaces[0]['name']
+            print(f"ℹ️ Workspace tespit edildi: {workspace_name} (ID: {workspace_id})")
         
-    if team_id:
-        q_project = f'mutation {{ projectCreate(input: {{ name: "Sinopia Manti", description: "Sinopia Manti Evi Web Sitesi", teamId: "{team_id}" }}) {{ id environments {{ edges {{ node {{ id }} }} }} }} }}'
+    if workspace_id:
+        q_project = f'mutation {{ projectCreate(input: {{ name: "Sinopia Manti", description: "Sinopia Manti Evi Web Sitesi", workspaceId: "{workspace_id}" }}) {{ id environments {{ edges {{ node {{ id }} }} }} }} }}'
     else:
         q_project = 'mutation { projectCreate(input: { name: "Sinopia Manti", description: "Sinopia Manti Evi Web Sitesi" }) { id environments { edges { node { id } } } } }'
         
