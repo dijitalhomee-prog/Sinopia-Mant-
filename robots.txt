@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /images/.DS_Store
+Disallow: /copy_images.sh
+Disallow: /process_logo.py
+
+Sitemap: https://sinopiamanti.com/sitemap.xml
