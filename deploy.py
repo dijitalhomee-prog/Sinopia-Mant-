@@ -3,20 +3,24 @@ import json
 import urllib.request
 import sys
 
-# Load RAILWAY_TOKEN
-RAILWAY_TOKEN = os.environ.get("RAILWAY_TOKEN")
-if not RAILWAY_TOKEN:
-    env_path = "/Users/egemengunes/Desktop/Antigravity/_knowledge/credentials/master.env"
-    if os.path.exists(env_path):
-        with open(env_path) as f:
-            for line in f:
-                if line.strip().startswith("RAILWAY_TOKEN="):
-                    RAILWAY_TOKEN = line.split("=", 1)[1].strip().strip('"').strip("'")
-                    break
+# Load RAILWAY_TOKEN from master.env first
+RAILWAY_TOKEN = None
+env_path = "/Users/egemengunes/Desktop/Antigravity/_knowledge/credentials/master.env"
+if os.path.exists(env_path):
+    with open(env_path) as f:
+        for line in f:
+            if line.strip().startswith("RAILWAY_TOKEN="):
+                RAILWAY_TOKEN = line.split("=", 1)[1].strip().strip('"').strip("'")
+                break
 
 if not RAILWAY_TOKEN:
-    print("❌ HATA: master.env içinde RAILWAY_TOKEN bulunamadı.")
+    RAILWAY_TOKEN = os.environ.get("RAILWAY_TOKEN")
+
+if not RAILWAY_TOKEN:
+    print("❌ HATA: master.env veya environment variables içinde RAILWAY_TOKEN bulunamadı.")
     sys.exit(1)
+
+print(f"🔑 Kullanılan Token (Maskeli): {RAILWAY_TOKEN[:4]}...{RAILWAY_TOKEN[-4:] if len(RAILWAY_TOKEN) > 4 else ''}")
 
 HEADERS = {
     "Content-Type": "application/json",
