@@ -40,6 +40,12 @@ def run_query(query):
             return resp_data
     except Exception as e:
         print("Error:", e)
+        if hasattr(e, 'read'):
+            try:
+                error_body = e.read().decode('utf-8')
+                print("Response Body:", error_body)
+            except Exception as read_err:
+                print("Could not read response body:", read_err)
         return {}
 
 STATE_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'railway_state.json')
