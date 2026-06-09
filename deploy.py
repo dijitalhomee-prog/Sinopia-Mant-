@@ -24,7 +24,8 @@ print(f"🔑 Kullanılan Token (Maskeli): {RAILWAY_TOKEN[:4]}...{RAILWAY_TOKEN[-
 
 HEADERS = {
     "Content-Type": "application/json",
-    "Authorization": f"Bearer {RAILWAY_TOKEN}"
+    "Authorization": f"Bearer {RAILWAY_TOKEN}",
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 }
 URL = "https://backboard.railway.com/graphql/v2"
 
