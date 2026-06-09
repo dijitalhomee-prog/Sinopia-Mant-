@@ -60,7 +60,21 @@ if os.path.exists(STATE_FILE):
 
 if not project_id or not env_id or not service_id:
     print("1. Railway Projesi Oluşturuluyor...")
-    q_project = 'mutation { projectCreate(input: { name: "Sinopia Manti", description: "Sinopia Manti Evi Web Sitesi" }) { id environments { edges { node { id } } } } }'
+    
+    # Workspace'i (teamId) otomatik tespit et
+    q_teams = 'query { teams { edges { node { id name } } } }'
+    res_t = run_query(q_teams)
+    team_id = None
+    if res_t.get('data', {}).get('teams', {}).get('edges'):
+        team_id = res_t['data']['teams']['edges'][0]['node']['id']
+        team_name = res_t['data']['teams']['edges'][0]['node']['name']
+        print(f"ℹ️ Workspace tespit edildi: {team_name} (ID: {team_id})")
+        
+    if team_id:
+        q_project = f'mutation {{ projectCreate(input: {{ name: "Sinopia Manti", description: "Sinopia Manti Evi Web Sitesi", teamId: "{team_id}" }}) {{ id environments {{ edges {{ node {{ id }} }} }} }} }}'
+    else:
+        q_project = 'mutation { projectCreate(input: { name: "Sinopia Manti", description: "Sinopia Manti Evi Web Sitesi" }) { id environments { edges { node { id } } } } }'
+        
     res_p = run_query(q_project)
     if 'errors' in res_p or not res_p.get('data'):
         print("Project create error:", res_p)
