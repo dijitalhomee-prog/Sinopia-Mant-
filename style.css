@@ -81,6 +81,7 @@ body{font-family:var(--fb);background:var(--c);color:var(--t);line-height:1.7;ov
 .delivery-item.yemeksepeti:hover{color:#ea004b;border-color:#ea004b}
 .delivery-item.getir:hover{color:#5d3ebc;border-color:#5d3ebc}
 .delivery-item.trendyol:hover{color:#f27a1a;border-color:#f27a1a}
+.delivery-item.migros:hover{color:#ff7600;border-color:#ff7600}
 
 /* STORY */
 .story{padding:6rem 1.5rem;background:var(--w)}
