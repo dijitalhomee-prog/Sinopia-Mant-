@@ -1,3 +1,4 @@
 .DS_Store
 copy_images.sh
 process_logo.py
+railway_state.json
