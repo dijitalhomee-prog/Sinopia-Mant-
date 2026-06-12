@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Sinopia Mantı — Görsel Kadraj Ayar Paneli</title>
+  <style>
+    :root {
+      --primary: #A03820;
+      --bg: #FFFAF5;
+      --card-bg: #FFFFFF;
+      --text: #3D2010;
+      --border: #EDE3D4;
+      --shadow: 0 8px 30px rgba(100, 50, 20, 0.08);
+      --radius: 12px;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 360px;
+      background: var(--card-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-shadow: var(--shadow);
+      z-index: 10;
+    }
+
+    .sidebar-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--primary);
+      color: white;
+    }
+
+    .sidebar-header h1 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .sidebar-header p {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .sidebar-content {
+      padding: 1.5rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      overflow-y: auto;
+    }
+
+    .css-box {
+      flex: 1;
+      background: #1e1e1e;
+      color: #a9b7c6;
+      font-family: "Courier New", Courier, monospace;
+      padding: 1rem;
+      border-radius: var(--radius);
+      font-size: 0.8rem;
+      overflow: auto;
+      white-space: pre;
+      border: 1px solid var(--border);
+      line-height: 1.4;
+    }
+
+    .btn-copy {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 0.85rem;
+      border-radius: 50px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.9rem;
+      text-align: center;
+      box-shadow: 0 4px 12px rgba(160, 56, 32, 0.2);
+    }
+
+    .btn-copy:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(160, 56, 32, 0.3);
+      background: #7A2A14;
+    }
+
+    .btn-copy:active {
+      transform: translateY(0);
+    }
+
+    /* Main Content */
+    .main-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .top-bar {
+      padding: 1rem 2rem;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .search-input {
+      width: 300px;
+      padding: 0.6rem 1rem;
+      border-radius: 50px;
+      border: 1px solid var(--border);
+      font-size: 0.88rem;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(160, 56, 32, 0.1);
+    }
+
+    .grid-container {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    /* Card Item */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      height: fit-content;
+    }
+
+    .img-wrapper {
+      width: 100%;
+      height: 220px;
+      overflow: hidden;
+      background: #eee;
+      position: relative;
+    }
+
+    .img-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .img-overlay {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      pointer-events: none;
+    }
+
+    .card-info {
+      padding: 1.25rem;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--text);
+    }
+
+    .control-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .slider-row label {
+      width: 80px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #6B4535;
+    }
+
+    .slider-row input[type="range"] {
+      flex: 1;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .slider-row span {
+      width: 45px;
+      font-size: 0.8rem;
+      text-align: right;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h1>Sinopia Kadraj Paneli</h1>
+      <p>Görselleri hizalayın ve CSS'i kopyalayın</p>
+    </div>
+    <div class="sidebar-content">
+      <p style="font-size: 0.85rem; line-height: 1.5;">
+        Aşağıdaki kartlardan sürgüleri kaydırarak görselleri hizalayın. Sonuçta oluşan CSS kodu otomatik olarak güncellenecektir.
+      </p>
+      <div class="css-box" id="css-output">/* CSS buraya gelecek */</div>
+      <button class="btn-copy" id="btn-copy" onclick="copyCSS()">CSS Kodunu Kopyala</button>
+    </div>
+  </div>
+
+  <!-- Main Panel -->
+  <div class="main-panel">
+    <div class="top-bar">
+      <h2 style="font-size: 1.1rem;">Menü Görselleri</h2>
+      <input type="text" class="search-input" id="search" placeholder="Görsel veya ürün adı ara..." oninput="filterCards()">
+    </div>
+    <div class="grid-container" id="grid">
+      <!-- Kartlar dinamik eklenecek -->
+    </div>
+  </div>
+
+  <script>
+    // Mevcut görseller ve style.css'deki konumları
+    const imagesData = [
+      { name: "Pepeçuralı Muhallebi", file: "pepecura_2.jpg", x: 50.0, y: 56.5 },
+      { name: "Yoğurtlu Mantı", file: "yogurtlu_manti_2.jpg", x: 50.1, y: 80.2 },
+      { name: "İçli Köfte", file: "icli_kofte_2.jpg", x: 51.5, y: 78.5 },
+      { name: "Çikolatalı Muhallebi", file: "tatllı_cıkolata.jpg", x: 50.2, y: 79.8 },
+      { name: "Mercimek Çorbası", file: "corba_mercimek.jpg", x: 49.7, y: 90.5 },
+      { name: "Tarhana Çorbası", file: "corba_tarhana.jpg", x: 51.0, y: 82.2 },
+      { name: "Patates Kızartması", file: "baslangıc_patataeskızartması.jpg", x: 51.5, y: 86.6 },
+      { name: "Zeytinyağlı Sarma", file: "soguk_zeytınyaglı_sarma.jpg", x: 51.9, y: 66.0 },
+      { name: "Enginar Salatası", file: "soguk_enginar_salatası.jpg", x: 50.8, y: 81.8 },
+      { name: "Kıymalı Çi Börek", file: "sıcaklar_cıborek_kıymalı.jpg", x: 50.2, y: 88.6 },
+      { name: "Patatesli Çi Börek", file: "sıcaklar_cıborek_patateslı.jpg", x: 50.1, y: 90.1 },
+      { name: "Kıymalı Gözleme", file: "sıcaklar_gozleme_kıymalı.jpg", x: 52.4, y: 62.3 },
+      { name: "Peynirli Gözleme", file: "sıcaklar_gozleme_peynırlı.jpg", x: 50.6, y: 67.8 },
+      { name: "Cevizli Mantı", file: "kıymalı_cevızlı_mantı.jpg", x: 50.1, y: 66.7 },
+      { name: "Yoğurtlu Cevizli Mantı", file: "kıymalı_yogurtlu_cevızlı_mantı.jpg", x: 50.1, y: 81.2 },
+      { name: "Çıtır Mantı", file: "kıymalı_cıtır_mantı.jpg", x: 50.2, y: 80.4 },
+      { name: "Haşlama Çıtır Karışık Yoğurtlu", file: "kıymalı_haslama_cıtır_karısık_yogurtlu.jpg", x: 50.7, y: 91.2 },
+      { name: "Haşlama Çıtır Karışık Cevizli", file: "kıymalı_haslama_cıtır_karısık_cevızlı.jpg", x: 50.0, y: 95.6 },
+      { name: "Patatesli Yoğurtlu Mantı", file: "patateslı_yogurtlu_mantı.jpg", x: 50.5, y: 80.5 },
+      { name: "Patatesli Cevizli Mantı", file: "patateslı_cevızlı_mantı.jpg", x: 50.1, y: 58.8 },
+      { name: "Patatesli Yoğurtlu Cevizli Mantı", file: "patateslı_yogurtlu_cevızlı_mantı.jpg", x: 49.8, y: 75.7 },
+      { name: "Patatesli Çıtır Mantı", file: "patateslı_cıtır_mantı.jpg", x: 50.1, y: 76.1 },
+      { name: "Patatesli Karışık Yoğurtlu", file: "patateslı_haslama_cıtır_karısık_yogurtlu.jpg", x: 50.6, y: 89.3 },
+      { name: "Patatesli Karışık Cevizli", file: "patateslı_haslama_cıtır_karısık_cevızlı.jpg", x: 50.9, y: 95.1 },
+      { name: "Hikayemiz (Büyük)", file: "anne_muftafından_bugune.jpg", x: 81.4, y: 23.0 }
+    ];
+
+    const grid = document.getElementById('grid');
+    
+    function init() {
+      grid.innerHTML = '';
+      imagesData.forEach((item, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.dataset.name = (item.name + ' ' + item.file).toLowerCase();
+        
+        card.innerHTML = `
+          <div class="img-wrapper">
+            <img id="img-${index}" src="images/${item.file}" style="object-position: ${item.x}% ${item.y}%" alt="${item.name}">
+            <div class="img-overlay" id="overlay-${index}">${item.x}% / ${item.y}%</div>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title">${item.name}</h3>
+            <div class="control-group">
+              <div class="slider-row">
+                <label>Genişlik (X)</label>
+                <input type="range" min="0" max="100" step="0.1" value="${item.x}" oninput="updateCrop(${index}, 'x', this.value)">
+                <span id="val-x-${index}">${item.x}%</span>
+              </div>
+              <div class="slider-row">
+                <label>Yükseklik (Y)</label>
+                <input type="range" min="0" max="100" step="0.1" value="${item.y}" oninput="updateCrop(${index}, 'y', this.value)">
+                <span id="val-y-${index}">${item.y}%</span>
+              </div>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      generateCSS();
+    }
+
+    function updateCrop(index, axis, value) {
+      const item = imagesData[index];
+      if (axis === 'x') {
+        item.x = parseFloat(value);
+        document.getElementById(`val-x-${index}`).innerText = item.x.toFixed(1) + '%';
+      } else {
+        item.y = parseFloat(value);
+        document.getElementById(`val-y-${index}`).innerText = item.y.toFixed(1) + '%';
+      }
+      
+      const img = document.getElementById(`img-${index}`);
+      img.style.objectPosition = `${item.x}% ${item.y}%`;
+      
+      const overlay = document.getElementById(`overlay-${index}`);
+      overlay.innerText = `${item.x.toFixed(1)}% / ${item.y.toFixed(1)}%`;
+      
+      generateCSS();
+    }
+
+    function generateCSS() {
+      let cssText = `/* SINOPIA MANTI GÖRSEL KADRAJ AYARLARI */\n`;
+      imagesData.forEach(item => {
+        cssText += `img[src*="${item.file}"] {\n  object-position: ${item.x.toFixed(1)}% ${item.y.toFixed(1)}%;\n}\n`;
+      });
+      document.getElementById('css-output').textContent = cssText;
+    }
+
+    function filterCards() {
+      const query = document.getElementById('search').value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        if (card.dataset.name.includes(query)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    function copyCSS() {
+      const cssText = document.getElementById('css-output').textContent;
+      navigator.clipboard.writeText(cssText).then(() => {
+        const btn = document.getElementById('btn-copy');
+        btn.innerText = "Kopyalandı! ✓";
+        btn.style.background = "#2f855a";
+        setTimeout(() => {
+          btn.innerText = "CSS Kodunu Kopyala";
+          btn.style.background = "var(--primary)";
+        }, 2000);
+      }).catch(err => {
+        alert("Kopyalanamadı, lütfen metni seçip manuel kopyalayın.");
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
