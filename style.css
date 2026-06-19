@@ -150,10 +150,8 @@ body{font-family:var(--fb);background:var(--c);color:var(--t);line-height:1.7;ov
 .mcard-sub-price span{font-family:var(--fd);font-size:.95rem;font-weight:700;color:var(--s)}
 .mcard-footer{padding:.75rem 1.25rem;border-top:1px dashed var(--b);background:var(--cm);display:flex;align-items:flex-start;justify-content:space-between;font-size:.75rem;color:var(--tl)}
 .mcard-cal{font-weight:600;color:var(--t);display:flex;align-items:center;gap:.25rem}
-.mcard-allergen{display:block;text-align:right;font-weight:600;color:#c05621}
-.mcard-allergen i{margin-right:.25rem}
-.mcard-allergen-none{display:block;text-align:right;font-weight:600;color:#2f855a}
-.mcard-allergen-none i{margin-right:.25rem}
+.mcard-allergen{display:grid;grid-template-columns:auto 1fr;gap:.25rem;align-items:start;text-align:left;font-weight:600;color:#c05621}
+.mcard-allergen-none{display:grid;grid-template-columns:auto 1fr;gap:.25rem;align-items:start;text-align:left;font-weight:600;color:#2f855a}
 
 /* DRINKS LIST */
 .drinks-list-container{max-width:960px;margin:0 auto;background:var(--w);border-radius:var(--r);border:1px solid var(--b);box-shadow:var(--sh);padding:2.5rem;animation:fadeInMenu .3s ease}
