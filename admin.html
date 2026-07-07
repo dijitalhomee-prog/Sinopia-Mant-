@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sinopia Mantı Evi - Yönetim Paneli</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #9b2c2c;
+      --primary-hover: #7b2121;
+      --bg: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f1f5f9;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --error: #ef4444;
+      --font-title: 'Outfit', sans-serif;
+      --font-body: 'Plus Jakarta Sans', sans-serif;
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --radius: 16px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      background-image: radial-gradient(circle at 10% 20%, rgba(155, 44, 44, 0.15) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 80%, rgba(30, 41, 59, 0.5) 0%, transparent 50%);
+    }
+
+    /* GLASS CONTAINER */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 480px;
+      padding: 2.5rem;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* LOGIN SCREEN */
+    .login-header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .login-header img {
+      max-width: 130px;
+      margin-bottom: 1.5rem;
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+    }
+
+    .login-header h1 {
+      font-family: var(--font-title);
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+
+    .login-header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      margin-top: 0.5rem;
+    }
+
+    .input-group {
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 0.85rem 1rem 0.85rem 2.8rem;
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      font-family: var(--font-body);
+      transition: all 0.3s;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(155, 44, 44, 0.25);
+      background: rgba(15, 23, 42, 0.8);
+    }
+
+    .input-field:focus + i {
+      color: #fff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 0.9rem;
+      background: var(--primary);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: var(--font-title);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 12px rgba(155, 44, 44, 0.3);
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(155, 44, 44, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(1px);
+    }
+
+    /* DASHBOARD */
+    .dashboard-container {
+      display: none;
+      width: 100%;
+      max-width: 1100px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 1.5rem;
+    }
+
+    .dashboard-title-group h2 {
+      font-family: var(--font-title);
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    .dashboard-title-group p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.25rem;
+    }
+
+    .btn-logout {
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 0.6rem 1.2rem;
+      font-size: 0.85rem;
+      box-shadow: none;
+      border-radius: 8px;
+    }
+
+    .btn-logout:hover {
+      background: rgba(239, 68, 68, 0.15);
+      border-color: var(--error);
+      box-shadow: none;
+      color: var(--error);
+    }
+
+    /* CATEGORIES GRID */
+    .categories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .category-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .category-title {
+      font-family: var(--font-title);
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px dashed var(--border);
+      padding-bottom: 0.75rem;
+    }
+
+    .category-title i {
+      color: var(--primary);
+    }
+
+    /* PRICE ITEM ROW */
+    .price-item {
+      margin-bottom: 1rem;
+      background: rgba(15, 23, 42, 0.4);
+      padding: 0.85rem;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .price-item-header {
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #fff;
+    }
+
+    .price-inputs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(75px, 1fr));
+      gap: 0.5rem;
+    }
+
+    .price-input-wrapper {
+      position: relative;
+    }
+
+    .price-input-wrapper label {
+      display: block;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 0.25rem;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .price-input-wrapper input {
+      width: 100%;
+      padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .price-input-wrapper span.currency-symbol {
+      position: absolute;
+      left: 0.45rem;
+      bottom: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .price-input-wrapper input:focus {
+      outline: none;
+      border-color: var(--primary);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    /* FOOTER SAVE BAR */
+    .footer-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid var(--border);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: center;
+      z-index: 100;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .footer-bar .btn-save {
+      max-width: 400px;
+    }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      z-index: 1000;
+      transform: translateY(-50px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-success { background-color: var(--success); }
+    .toast-error { background-color: var(--error); }
+
+    /* LOADING SPINNER */
+    .spinner {
+      border: 3px solid rgba(255,255,255,0.2);
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border-left-color: #fff;
+      animation: spin 1s linear infinite;
+      display: none;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* RESPONSIVENESS */
+    @media (max-width: 768px) {
+      body {
+        padding-bottom: 6rem;
+      }
+      .dashboard-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      .categories-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- LOGIN CARD -->
+  <div id="login-container" class="glass-card">
+    <div class="login-header">
+      <img src="images/logo_red.png" alt="Sinopia Mantı Evi Logo">
+      <h1>Yönetim Girişi</h1>
+      <p>Fiyat güncellemeleri için giriş yapın.</p>
+    </div>
+    <form id="login-form">
+      <div class="input-group">
+        <label for="password">Yönetici Şifresi</label>
+        <div class="input-wrapper">
+          <input type="password" id="password" class="input-field" placeholder="••••••••" required>
+          <i class="fa-solid fa-lock"></i>
+        </div>
+      </div>
+      <button type="submit" class="btn" id="btn-login">
+        <span>Giriş Yap</span>
+        <div class="spinner" id="login-spinner"></div>
+      </button>
+    </form>
+  </div>
+
+  <!-- DASHBOARD CARD -->
+  <div id="dashboard-container" class="dashboard-container">
+    <div class="dashboard-header">
+      <div class="dashboard-title-group">
+        <h2>Sinopia Fiyat Paneli</h2>
+        <p>Menu üzerindeki fiyatları anlık olarak düzenleyin.</p>
+      </div>
+      <button class="btn btn-logout" id="btn-logout"><i class="fa-solid fa-right-from-bracket"></i> Çıkış Yap</button>
+    </div>
+
+    <form id="prices-form">
+      <div class="categories-grid">
+        
+        <!-- ÇORBALAR -->
+        <div class="category-card">
+          <div class="category-title"><i class="fa-solid fa-soup"></i> 🥣 Çorbalar</div>
+          
+          <div class="price-item">
+            <div class="price-item-header">Mercimek Çorbası</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="corba-mercimek-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="corba-mercimek-half" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Tarhana Çorbası</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="corba-tarhana-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="corba-tarhana-half" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BAŞLANGIÇLAR & SOĞUKLAR -->
+        <div class="category-card">
+          <div class="category-title"><i class="fa-solid fa-leaf"></i> 🥬 Başlangıç & Soğuklar</div>
+          
+          <div class="price-item">
+            <div class="price-item-header">İçli Köfte (Adet)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="starter-iclikofte" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Anne Köftesi</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Porsiyon</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="starter-kofteler-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="starter-kofteler-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Patates Kızartması</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="starter-patates" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Zeytinyağlı Yaprak Sarma</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="soguk-sarma" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Kabaklı Enginar Salata</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="soguk-enginar" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SICAKLAR -->
+        <div class="category-card">
+          <div class="category-title"><i class="fa-solid fa-fire"></i> 🍳 Sıcak Lezzetler</div>
+          
+          <div class="price-item">
+            <div class="price-item-header">Kıymalı Çi Börek</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="sicak-ciborek-kiymali-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="sicak-ciborek-kiymali-half" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Peynirli Çi Börek</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="sicak-ciborek-peynirli-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="sicak-ciborek-peynirli-half" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Kıymalı Gözleme</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="sicak-gozleme-kiymali" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Peynirli Gözleme</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="sicak-gozleme-peynirli" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- KIYMALI MANTILAR -->
+        <div class="category-card">
+          <div class="category-title"><i class="fa-solid fa-meat"></i> 🥩 Kıymalı Mantılar</div>
+          
+          <div class="price-item">
+            <div class="price-item-header">Yoğurtlu Mantı</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-yogurtlu-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-yogurtlu-half" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-yogurtlu-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Cevizli Mantı</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-cevizli-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-cevizli-half" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-cevizli-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Yoğurtlu Cevizli Mantı</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-yogurtlucevizli-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-yogurtlucevizli-half" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-yogurtlucevizli-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Çıtır Mantı</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-citir-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-citir-half" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-citir-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Karışık Yoğurtlu (Haşlama & Çıtır)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-karisik-yogurtlu-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-karisik-yogurtlu-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Karışık Cevizli (Haşlama & Çıtır)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-karisik-cevizli-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="kiymali-karisik-cevizli-1-5" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PATATESLİ MANTILAR -->
+        <div class="category-card">
+          <div class="category-title"><i class="fa-solid fa-potato"></i> 🥔 Patatesli Mantılar</div>
+          
+          <div class="price-item">
+            <div class="price-item-header">Yoğurtlu Patatesli Mantı</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-yogurtlu-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-yogurtlu-half" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-yogurtlu-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Cevizli Patatesli Mantı</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-cevizli-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-cevizli-half" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-cevizli-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Yoğurtlu Cevizli Patatesli Mantı</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-yogurtlucevizli-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-yogurtlucevizli-half" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-yogurtlucevizli-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Çıtır Patatesli Mantı</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-citir-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>Yarım</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-citir-half" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-citir-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Karışık Patatesli Yoğurtlu</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-karisik-yogurtlu-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-karisik-yogurtlu-1-5" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Karışık Patatesli Cevizli</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Tam</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-karisik-cevizli-full" required>
+              </div>
+              <div class="price-input-wrapper">
+                <label>1.5 Por.</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="patatesli-karisik-cevizli-1-5" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TATLILAR -->
+        <div class="category-card">
+          <div class="category-title"><i class="fa-solid fa-cake-slice"></i> 🍰 Tatlılar</div>
+          
+          <div class="price-item">
+            <div class="price-item-header">Pepeçuralı Muhallebi</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="tatli-pepecura" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Çikolatalı Muhallebi</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="tatli-cikolata" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Alba</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="tatli-alba" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- İÇECEKLER -->
+        <div class="category-card">
+          <div class="category-title"><i class="fa-solid fa-bottle-water"></i> 🥤 İçecekler</div>
+          
+          <div class="price-item">
+            <div class="price-item-header">Ev Yapımı Limonata</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-limonata" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Taze Portakal Suyu</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-portakal" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Ev Yapımı Ayran</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-ayran" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Coca-Cola (250cc)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-cola" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Coca-Cola Zero (250cc)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-colazero" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Fanta (250cc)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-fanta" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Sprite (250cc)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-sprite" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Fuse Tea (250cc)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-fusetea" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Vişne Suyu (250cc)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-cherry" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Maden Suyu (200cc)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-soda" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Su (330cc)</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-su" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Türk Kahvesi</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-kahve" required>
+              </div>
+            </div>
+          </div>
+
+          <div class="price-item">
+            <div class="price-item-header">Çay</div>
+            <div class="price-inputs">
+              <div class="price-input-wrapper">
+                <label>Fiyat</label>
+                <span class="currency-symbol">₺</span>
+                <input type="number" name="drink-cay" required>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- SAVE FLOATING BAR -->
+      <div class="footer-bar">
+        <button type="submit" class="btn btn-save" id="btn-save">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <span>Değişiklikleri Kaydet</span>
+          <div class="spinner" id="save-spinner"></div>
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast" class="toast">
+    <i id="toast-icon" class="fa-solid"></i>
+    <span id="toast-text"></span>
+  </div>
+
+  <script>
+    const loginContainer = document.getElementById('login-container');
+    const dashboardContainer = document.getElementById('dashboard-container');
+    const loginForm = document.getElementById('login-form');
+    const pricesForm = document.getElementById('prices-form');
+    const toast = document.getElementById('toast');
+    const toastText = document.getElementById('toast-text');
+    const toastIcon = document.getElementById('toast-icon');
+    
+    // Check if session cookie exists
+    const hasSession = document.cookie.split(';').some((item) => item.trim().startsWith('sinopia_session='));
+    if (hasSession) {
+      showDashboard();
+    }
+
+    function showToast(text, type = 'success') {
+      toastText.textContent = text;
+      toast.className = `toast toast-${type} show`;
+      if (type === 'success') {
+        toastIcon.className = 'fa-solid fa-circle-check';
+      } else {
+        toastIcon.className = 'fa-solid fa-triangle-exclamation';
+      }
+      setTimeout(() => {
+        toast.className = 'toast';
+      }, 3500);
+    }
+
+    function showDashboard() {
+      loginContainer.style.display = 'none';
+      dashboardContainer.style.display = 'block';
+      document.body.style.justifyContent = 'flex-start';
+      loadPrices();
+    }
+
+    function showLogin() {
+      loginContainer.style.display = 'block';
+      dashboardContainer.style.display = 'none';
+      document.body.style.justifyContent = 'center';
+    }
+
+    // Login Handler
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const password = document.getElementById('password').value;
+      const btn = document.getElementById('btn-login');
+      const spinner = document.getElementById('login-spinner');
+      
+      btn.disabled = true;
+      spinner.style.display = 'block';
+
+      try {
+        const res = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password })
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast('Başarıyla giriş yapıldı.');
+          showDashboard();
+        } else {
+          showToast(data.message || 'Giriş başarısız', 'error');
+        }
+      } catch (err) {
+        showToast('Sunucu bağlantı hatası', 'error');
+      } finally {
+        btn.disabled = false;
+        spinner.style.display = 'none';
+      }
+    });
+
+    // Logout Handler
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+      await fetch('/api/logout', { method: 'POST' });
+      showToast('Oturum kapatıldı.');
+      showLogin();
+    });
+
+    // Load Prices
+    async function loadPrices() {
+      try {
+        const res = await fetch('/api/prices');
+        const prices = await res.json();
+        
+        // Populate inputs
+        const inputs = pricesForm.querySelectorAll('input[type="number"]');
+        inputs.forEach(input => {
+          if (prices[input.name]) {
+            input.value = prices[input.name];
+          }
+        });
+      } catch (err) {
+        showToast('Fiyatlar yüklenirken hata oluştu.', 'error');
+      }
+    }
+
+    // Save Prices
+    pricesForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save');
+      const spinner = document.getElementById('save-spinner');
+      
+      btn.disabled = true;
+      spinner.style.display = 'block';
+
+      const formData = new FormData(pricesForm);
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      try {
+        const res = await fetch('/api/prices', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        const result = await res.json();
+        if (result.success) {
+          showToast('Fiyatlar başarıyla kaydedildi.');
+        } else {
+          showToast(result.message || 'Kayıt sırasında hata', 'error');
+          if (res.status === 401) {
+            showLogin();
+          }
+        }
+      } catch (err) {
+        showToast('Bağlantı hatası: Kaydedilemedi.', 'error');
+      } finally {
+        btn.disabled = false;
+        spinner.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>
