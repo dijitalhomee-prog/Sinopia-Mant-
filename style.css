@@ -566,12 +566,14 @@ img[src*="mantı_15.jpg"] {
     box-sizing: border-box;
   }
   
+  .mab-btn-review,
   .mab-btn-call {
     background: var(--s);
     color: var(--w);
     border: 1px solid var(--s);
   }
   
+  .mab-btn-review:active,
   .mab-btn-call:active {
     background: var(--sd);
     border-color: var(--sd);
